@@ -12,42 +12,166 @@
 
 	<!-- CSS -->
 	<style>
-		body { margin:0; background:#a7e0fe; }
-		canvas { position:absolute; display:block; z-index:1001; pointer-events:none; }
+		* { margin:0; padding:0; box-sizing:border-box; }
+		body { margin:0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; overflow-x:hidden; background: url('https://storage.googleapis.com/hust-files/2021-11-15/5807675312963584/background-new-page_.9m.jpeg') center/cover fixed no-repeat; }
+		/* canvas removed */
 		a { color:white; text-decoration:none; }
 		#copyright { color:white; font-family:arial; font-size:12px; position:absolute; right:0; bottom:0; z-index:1000; }
-		/* Invitation card overlay */
-		#card-container { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; z-index:500; pointer-events:none; }
-		.card { pointer-events:auto; width:min(92vw, 720px); background:linear-gradient(180deg, #ffffff, #f7fffb); border:1px solid #d9efe4; border-radius:20px; padding:24px 28px; box-shadow:0 10px 30px rgba(20,108,67,0.25); text-align:center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; color:#0f2e1f; }
-		.card .badge { display:inline-block; padding:6px 12px; border-radius:999px; font-size:14px; background:linear-gradient(90deg, #2fbf71, #198754); color:#fff; box-shadow:0 4px 10px rgba(47,191,113,.35); }
-		.card .icon { margin:6px 0 2px; }
-		.card .icon svg { width:42px; height:42px; filter:drop-shadow(0 2px 4px rgba(0,0,0,.15)); }
-		.card h1 { margin:8px 0 6px; font-size: clamp(24px, 8vw, 34px); color:#146c43; }
-		.card .message { margin:0 0 12px; font-size: clamp(15px, 4.6vw, 18px); color:#2c5544; opacity:.9; }
-		.card .details { list-style:none; padding:0; margin:0 0 18px; display:grid; gap:6px; color:#174e33; }
-		.card .cta { display:inline-block; padding:10px 18px; border-radius:12px; background:#2fbf71; color:#fff; text-decoration:none; font-weight:600; box-shadow:0 6px 16px rgba(47,191,113,.35); }
 
-		/* Mobile tweaks */
-		@media (max-width: 480px) {
-			.card { padding:22px 18px; border-radius:16px; }
-			.card .badge { font-size:3.6vw; padding:5px 10px; }
-			.card .icon svg { width:36px; height:36px; }
-			.card h1 { font-size: 8.6vw; }
-			.card .message { font-size: 4.8vw; }
-			.card .details { gap:4px; font-size: 4.2vw; }
-			.card .cta { padding:12px 18px; border-radius:10px; font-size: 4.4vw; }
+		/* Header */
+		header { position:fixed; top:0; left:0; right:0; z-index:1000; background:rgb(255, 200, 200); backdrop-filter:blur(10px); border-bottom:1px solid rgba(255,255,255,.2); }
+		nav { display:flex; justify-content:space-between; align-items:center; padding:15px 30px; max-width:1200px; margin:0 auto; }
+		.logo { font-size:24px; font-weight:bold; color:#333; text-shadow:0 2px 4px rgba(0,0,0,.1); }
+		.nav-links { display:flex; gap:30px; list-style:none; }
+		.nav-links a { color:#666; font-weight:500; transition:color .3s; }
+		.nav-links a:hover { color:#333; }
+		.menu-toggle { display:none; background:none; border:none; font-size:24px; color:#333; cursor:pointer; }
+
+		/* Sidebar */
+		.sidebar { position:fixed; top:0; right:-300px; width:300px; height:100vh; background:rgba(255,255,255,.95); backdrop-filter:blur(15px); z-index:999; transition:right .3s ease; padding:80px 20px 20px; overflow-y:auto; }
+		.sidebar.open { right:0; }
+		.sidebar h3 { color:#333; margin-bottom:20px; font-size:18px; }
+		.sidebar .quick-info { background:#f0f0f0; color:#333; padding:15px; border-radius:10px; margin-bottom:20px; }
+		/* Countdown moved to center card */
+
+		/* Main Content */
+		main { padding-top:80px; }
+		.section { padding:60px 30px; max-width:1200px; margin:0 auto; }
+		.section h2 { text-align:center; font-size:36px; color: #50c1c1; margin-bottom:40px; position:relative; }
+		.section h2:after { content:""; position:absolute; bottom:-10px; left:50%; transform:translateX(-50%); width:80px; height:2px; background:#ccc; border-radius:1px; }
+
+		/* Hero Section */
+		.hero { text-align:center; padding:100px 30px; position:relative; }
+		.hero .card { pointer-events:auto; width:min(92vw, 720px); background:rgba(255,255,255,.9); border:1px solid rgba(0,0,0,.1); border-radius:20px; padding:40px; box-shadow:0 20px 50px rgba(0,0,0,0.15); text-align:center; color:#333; backdrop-filter:blur(8px); position:relative; overflow:hidden; margin:0 auto; }
+		.hero .card:before { content:""; position:absolute; inset:0; background: transparent; pointer-events:none; z-index:0; }
+		.hero .badge { display:inline-block; padding:8px 16px; border-radius:999px; font-size:16px; background:linear-gradient(90deg, #2fbf71, #198754); color:#fff; box-shadow:0 4px 10px rgba(47,191,113,.35); position:relative; overflow:hidden; }
+		.hero .badge:after { content:""; position:absolute; inset:-40% auto -40% -60%; width:40%; background:linear-gradient(75deg, transparent, rgba(255,255,255,.7), transparent); transform:skewX(-20deg); animation:shine 3.6s ease-in-out infinite; }
+		.hero .icon { margin:15px 0 10px; }
+		.hero .icon svg { width:50px; height:50px; filter:drop-shadow(0 2px 4px rgba(0,0,0,.15)); }
+		.hero h1 { margin:15px 0 15px; font-size: clamp(32px, 9vw, 48px); color:#333; letter-spacing:.5px; position:relative; z-index:1; }
+		.hero h1:after { content:""; position:absolute; left:50%; transform:translateX(-50%); bottom:-15px; width:200px; height:2px; background:#ccc; border-radius:1px; opacity:.6; }
+		.hero .message { margin:0 0 20px; font-size: clamp(16px, 4.8vw, 20px); color:#666; opacity:.9; }
+		.hero .details { list-style:none; padding:0; margin:0 0 25px; display:grid; gap:8px; color:#666; }
+		.hero .cta { display:inline-block; padding:12px 24px; border-radius:12px; background:#2fbf71; color:#fff; text-decoration:none; font-weight:600; box-shadow:0 6px 16px rgba(47,191,113,.35); transition:transform .3s; }
+		.hero .cta:hover { transform:translateY(-2px); }
+
+		/* Countdown in center card */
+		.hero .countdown { margin:20px 0; padding:20px; background:rgba(0,0,0,.05); border-radius:15px; }
+		.hero .countdown h3 { color:#333; margin-bottom:15px; font-size:18px; text-align:center; }
+		.hero .countdown-items { display:flex; justify-content:center; gap:15px; }
+		.hero .countdown-item { background:rgba(255,255,255,.8); padding:15px 20px; border-radius:10px; text-align:center; min-width:70px; box-shadow:0 2px 8px rgba(0,0,0,.1); }
+		.hero .countdown-number { font-size:24px; font-weight:bold; color:#333; display:block; }
+		.hero .countdown-label { font-size:12px; color:#666; margin-top:5px; }
+
+		/* About Section */
+		.about { background:rgba(255,255,255,.7); backdrop-filter:blur(10px); border-radius:20px; padding:40px; margin:40px 0; }
+		.about-content { display:grid; grid-template-columns:1fr 2fr; gap:40px; align-items:center; }
+		.about-photo { width:200px; height:200px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; font-size:60px; color:#666; margin:0 auto; }
+		.about-text h3 { color:#fff; margin-bottom:15px; font-size:24px; font-weight:bold; text-shadow:0 2px 4px rgba(0,0,0,.8); background:rgba(0,0,0,.7); padding:10px 15px; border-radius:8px; }
+		.about-text p { color:#666; line-height:1.6; margin-bottom:15px; }
+		.achievements { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-top:30px; }
+		.achievement { background:rgba(0,0,0,.05); padding:20px; border-radius:10px; text-align:center; }
+		.achievement .icon { font-size:30px; margin-bottom:10px; }
+		.achievement h4 { color:#333; margin-bottom:5px; }
+		.achievement p { color:#666; font-size:14px; }
+
+		/* Location Section */
+		.location { background:rgba(255,255,255,.7); backdrop-filter:blur(10px); border-radius:20px; padding:40px; margin:40px 0; }
+		.map-container { position:relative; height:400px; background:#f5f5f5; border-radius:15px; overflow:hidden; margin:20px 0; }
+		.map-placeholder { width:100%; height:100%; background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="%23e3f2fd"/><circle cx="200" cy="150" r="8" fill="%23146c43"/><text x="200" y="180" text-anchor="middle" font-family="Arial" font-size="16" fill="%23146c43">Tòa C2 - Đại học Bách Khoa Hà Nội</text></svg>') center/cover; display:flex; align-items:center; justify-content:center; }
+		.location-info { display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:30px; margin-top:30px; }
+		.location-item { display:flex; align-items:center; gap:15px; }
+		.location-item .icon { width:40px; height:40px; background:#f0f0f0; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#666; font-size:18px; }
+		.location-item .text h4 { color:#333; margin-bottom:5px; }
+		.location-item .text p { color:#666; }
+
+		/* Gallery Section */
+		.gallery { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin:40px 0; }
+		.gallery-item { aspect-ratio:1; background:#f0f0f0; border-radius:15px; display:flex; align-items:center; justify-content:center; color:#666; font-size:24px; transition:transform .3s; }
+		.gallery-item:hover { transform:scale(1.05); }
+
+		/* Timeline Section */
+		.timeline { position:relative; padding:40px 0; }
+		.timeline::before { content:""; position:absolute; left:50%; top:0; bottom:0; width:4px; background:#ccc; transform:translateX(-50%); }
+		.timeline-item { position:relative; margin:40px 0; padding:0 50px; }
+		.timeline-item:nth-child(odd) { text-align:right; }
+		.timeline-item:nth-child(even) { text-align:left; }
+		.timeline-content { background:rgba(255,255,255,.8); padding:20px; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,.1); position:relative; }
+		.timeline-content::before { content:""; position:absolute; top:20px; width:0; height:0; border:10px solid transparent; }
+		.timeline-item:nth-child(odd) .timeline-content::before { right:-20px; border-left-color:rgba(255,255,255,.8); }
+		.timeline-item:nth-child(even) .timeline-content::before { left:-20px; border-right-color:rgba(255,255,255,.8); }
+		.timeline-dot { position:absolute; left:50%; top:20px; width:20px; height:20px; background:#ccc; border-radius:50%; transform:translateX(-50%); border:4px solid white; box-shadow:0 0 0 4px #ccc; }
+
+		/* RSVP Section */
+		.rsvp-form { background:rgba(255,255,255,.8); backdrop-filter:blur(10px); border-radius:20px; padding:40px; margin:40px 0; }
+		.form-group { margin-bottom:20px; }
+		.form-group label { display:block; margin-bottom:5px; color:#333; font-weight:500; }
+		.form-group input, .form-group select, .form-group textarea { width:100%; padding:12px; border:2px solid #e0e0e0; border-radius:8px; font-size:16px; transition:border-color .3s; }
+		.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline:none; border-color:#666; }
+		.submit-btn { background:#666; color:white; padding:12px 30px; border:none; border-radius:8px; font-size:16px; font-weight:600; cursor:pointer; transition:transform .3s; }
+		.submit-btn:hover { transform:translateY(-2px); }
+
+		/* Footer */
+		footer { background:rgba(255,255,255,.9); color:#333; padding:40px 30px 20px; text-align:center; margin-top:60px; backdrop-filter:blur(10px); border-top:1px solid rgba(0,0,0,.1); }
+		.footer-content { max-width:1200px; margin:0 auto; }
+		.social-links { display:flex; justify-content:center; gap:20px; margin:20px 0; }
+		.social-links a { width:40px; height:40px; background:rgba(0,0,0,.1); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background .3s; }
+		.social-links a:hover { background:rgba(0,0,0,.2); }
+
+		/* Background blobs removed */
+		@keyframes shine { 0% { left:-60%; } 100% { left:120%; } }
+
+		/* Mobile Responsive */
+		@media (max-width: 768px) {
+			.nav-links { display:none; }
+			.menu-toggle { display:block; }
+			.sidebar { width:280px; }
+			.about-content { grid-template-columns:1fr; text-align:center; }
+			.timeline::before { left:20px; }
+			.timeline-item { padding-left:60px; text-align:left !important; }
+			.timeline-dot { left:20px; }
+			.timeline-item:nth-child(odd) .timeline-content::before { left:-20px; right:auto; border-right-color:rgba(255,255,255,.8); border-left-color:transparent; }
 		}
 	</style>
 
 	<body id="body">
-		<!-- CANVAS -->
-		<canvas id="canvas">Canvas is not supported in your browser or you don't have enabled Javascripts.</canvas>
+		<!-- Fireworks canvas removed -->
 
-		<!-- Invitation Card Overlay -->
-		<div id="card-container" role="presentation">
-			<main class="card" role="main" aria-label="Graduation invitation card">
+		<!-- Background blobs removed -->
+
+		<!-- Header -->
+		<header>
+			<nav>
+				<div class="logo">🎓 Graduation 2025</div>
+				<ul class="nav-links">
+					<li><a href="#home">Trang chủ</a></li>
+					<li><a href="#about">Về tôi</a></li>
+					<li><a href="#location">Địa điểm</a></li>
+					<li><a href="#gallery">Thư viện</a></li>
+					<!-- <li><a href="#timeline">Hành trình</a></li> -->
+					<!-- <li><a href="#rsvp">RSVP</a></li> -->
+				</ul>
+				<button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+			</nav>
+		</header>
+
+		<!-- Sidebar -->
+		<div class="sidebar" id="sidebar">
+			<div class="quick-info">
+				<h3>Thông tin nhanh</h3>
+				<p><strong>Ngày:</strong> 27/09/2025</p>
+				<p><strong>Giờ:</strong> 8h30-10h30</p>
+				<p><strong>Địa điểm:</strong> Tòa C2 - Đại học Bách Khoa Hà Nội</p>
+			</div>
+		</div>
+
+		<!-- Main Content -->
+		<main>
+			<!-- Hero Section -->
+			<section id="home" class="hero">
+				<div class="card">
 				<div class="card-header">
-					<span class="badge">Thiệp mời tham dự</span>
+						<span class="badge">Thiệp mời tham dự</span>
 					<div class="icon" aria-hidden="true">
 						<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
 							<path d="M2 24L32 10l30 14-30 14L2 24z" fill="#146c43"/>
@@ -58,367 +182,270 @@
 						</svg>
 					</div>
 				</div>
-				<h1>LỄ TỐT NGHIỆP</h1>
-				<p class="message">Trân trọng mời mọi người tới tham dự buổi lễ tốt nghiệp của em/mình !</p>
+					<h1>LỄ TỐT NGHIỆP</h1>
+					<p class="message">Trân trọng mời mọi người tới tham dự buổi lễ tốt nghiệp của em/mình !</p>
 				<ul class="details">
 					<li><strong>Thời gian:</strong> 8h30-10h30 Thứ 7 27/09/2025</li>
 					<li><strong>Địa điểm:</strong> Tòa C2 - Đại học Bách Khoa Hà Nội</li>
 				</ul>
-				<!-- <a class="cta" href="#rsvp" aria-label="RSVP link">RSVP</a> -->
+				
+				<!-- Countdown Timer -->
+				<div class="countdown">
+					<h3>Đếm ngược đến ngày tốt nghiệp</h3>
+					<div class="countdown-items">
+						<div class="countdown-item">
+							<span class="countdown-number" id="days">0</span>
+							<span class="countdown-label">Ngày</span>
+						</div>
+						<div class="countdown-item">
+							<span class="countdown-number" id="hours">0</span>
+							<span class="countdown-label">Giờ</span>
+						</div>
+						<div class="countdown-item">
+							<span class="countdown-number" id="minutes">0</span>
+							<span class="countdown-label">Phút</span>
+						</div>
+						<div class="countdown-item">
+							<span class="countdown-number" id="seconds">0</span>
+							<span class="countdown-label">Giây</span>
+						</div>
+					</div>
+				</div>
+				
+				<!-- <a class="cta" href="#rsvp">Xác nhận tham dự</a> -->
+				</div>
+			</section>
+
+			<!-- About Section -->
+			<section id="about" class="section">
+				<h2>Về tôi</h2>
+				<div class="about">
+					<div class="about-content">
+						<div class="about-photo">👨‍🎓</div>
+						<div class="about-text">
+							<h3>Chào mừng đến với lễ tốt nghiệp của tôi!</h3>
+							<p>Xin chào! Tôi là một sinh viên tốt nghiệp ngành Công nghệ thông tin tại Đại học Bách Khoa Hà Nội. Sau 4 năm học tập và rèn luyện, tôi rất vui mừng được chia sẻ niềm vui này với gia đình, bạn bè và những người thân yêu.</p>
+							<p>Trong suốt quá trình học tập, tôi đã không ngừng nỗ lực để đạt được những thành tích tốt nhất và tích lũy kinh nghiệm quý báu. Hôm nay, tôi muốn mời bạn cùng tham dự buổi lễ đặc biệt này để cùng chúc mừng thành công của tôi.</p>
+						</div>
+					</div>
+					<div class="achievements">
+						<div class="achievement">
+							<div class="icon">🏆</div>
+							<h4>Học bổng xuất sắc</h4>
+							<p>Đạt học bổng toàn phần 4 năm liên tiếp</p>
+						</div>
+						<div class="achievement">
+							<div class="icon">💻</div>
+							<h4>Dự án tốt nghiệp</h4>
+							<p>Phát triển ứng dụng web fullstack</p>
+						</div>
+						<div class="achievement">
+							<div class="icon">🎯</div>
+							<h4>GPA 3.8/4.0</h4>
+							<p>Xếp loại tốt nghiệp loại giỏi</p>
+						</div>
+						<div class="achievement">
+							<div class="icon">🤝</div>
+							<h4>Hoạt động xã hội</h4>
+							<p>Chủ tịch CLB Công nghệ thông tin</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Location Section -->
+			<section id="location" class="section">
+				<h2>Địa điểm tổ chức</h2>
+				<div class="location">
+					<div class="map-container">
+						<div class="map-placeholder">
+							<!-- Map placeholder - in real implementation, you'd embed Google Maps here -->
+						</div>
+					</div>
+					<div class="location-info">
+						<div class="location-item">
+							<div class="icon">📍</div>
+							<div class="text">
+								<h4>Địa chỉ</h4>
+								<p>Tòa C2 - Đại học Bách Khoa Hà Nội<br>Số 1 Đại Cồ Việt, Hai Bà Trưng, Hà Nội</p>
+							</div>
+						</div>
+						<div class="location-item">
+							<div class="icon">🚗</div>
+							<div class="text">
+								<h4>Bãi đỗ xe</h4>
+								<p>Có bãi đỗ xe miễn phí trong khuôn viên trường</p>
+							</div>
+						</div>
+						<div class="location-item">
+							<div class="icon">🚌</div>
+							<div class="text">
+								<h4>Phương tiện công cộng</h5>
+								<p>Xe bus: Tuyến 01, 02, 03, 09<br>Metro: Ga Cầu Giấy (5 phút đi bộ)</p>
+							</div>
+						</div>
+						<div class="location-item">
+							<div class="icon">🍽️</div>
+							<div class="text">
+								<h4>Tiệc mừng</h4>
+								<p>Nhà hàng ABC - 123 Lê Duẩn<br>Thời gian: 11h30-13h30</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Gallery Section -->
+			<section id="gallery" class="section">
+				<h2>Khoảnh khắc đẹp</h2>
+				<div class="gallery">
+					<div class="gallery-item">📚</div>
+					<div class="gallery-item">🎓</div>
+					<div class="gallery-item">👥</div>
+					<div class="gallery-item">🏫</div>
+					<div class="gallery-item">💻</div>
+					<div class="gallery-item">🎉</div>
+				</div>
+			</section>
+
+			<!-- Timeline Section removed per request -->
+
+			<!-- RSVP Section removed per request -->
 			</main>
+
+		<!-- Footer -->
+		<footer>
+			<div class="footer-content">
+				<h3>🎓 Cảm ơn bạn đã tham dự!</h3>
+				<p>Hãy liên hệ với tôi nếu bạn có bất kỳ câu hỏi nào</p>
+				<div class="social-links">
+					<a href="#" title="Facebook">📘</a>
+					<a href="#" title="Instagram">📷</a>
+					<a href="#" title="LinkedIn">💼</a>
+					<a href="#" title="Email">📧</a>
+				</div>
+				<p>&copy; 2025 Graduation Invitation. Made with ❤️</p>
 		</div>
+		</footer>
 
-		<!-- JAVASCRIPT - CANVAS -->
+		<!-- JAVASCRIPT -->
 		<script>
-			window.oncontextmenu = function () { return false; } // Block menu
-
-			var canvas = document.getElementById('canvas'); // Get element by ID canvas
-			var ctx = canvas.getContext('2d'); 				// Get concent of canvas 2d graphics
-			var frameRate = 60.0;							// Frame rate per second use in loop
-			var frameDelay = 1000.0/frameRate;				// Frame Delay per second like latency
-
-			var clientWidth = innerWidth;					// Clients Width of web screen
-			var clientHeight = innerHeight;					// Clients height of web screen
-			var timer = 0;									// Timer is ticker, how many ticks per round
-			var x = 0;										// Mouse x coordinates
-			var y = 0;										// Mouse y coordinates
-
-			canvas.width = clientWidth;						// Set canvas width to user width
-			canvas.height = clientHeight;					// Set canvas height to user height
-
-			var TimedFirework = 1000;						// Repeat Firework every x MS
-			var LimiterTicker = 0;							// 
-			var fireworks = [];								// Array with starting fireworks
-			var particles = [];								// Array with particles
-			var typecount = 1;								// Variable to change firework type
-			var sparks = [];								// Array for sparkles drops
-			var num = 1;									// number of color
-			var colorchanger = 0;							// colorchange timer
-
-			// Function to calculate distance = Simple Pythagorean theorem
-			function distance(px1, py1, px2, py2) {
-				xdis = px1 - px2;
-				ydis = py1 - py2;
-				return Math.sqrt((xdis*xdis) + (ydis*ydis));
+			// Sidebar functionality
+			function toggleSidebar() {
+				const sidebar = document.getElementById('sidebar');
+				sidebar.classList.toggle('open');
 			}
 
-			// My own created function to get angle from point to point
-			function getAngle(posx1, posy1, posx2, posy2) {
-				if (posx1 == posx2) { if (posy1 > posy2) { return 90; } else { return 270; } }
-				if (posy1 == posy2) { if (posy1 > posy2) { return 0; } else { return 180; } }
-
-				var xDist = posx1 - posx2;
-				var yDist = posy1 - posy2;
-
-				if (xDist == yDist) { if (posx1 < posx2) { return 225; } else { return 45; } }
-				if (-xDist == yDist) { if (posx1 < posx2) { return 135; } else { return 315; } }
-
-				if (posx1 < posx2) {
-					return Math.atan2(posy2-posy1, posx2-posx1)*(180/Math.PI) + 180;
-				} else {
-					return Math.atan2(posy2-posy1, posx2-posx1)*(180/Math.PI) + 180;
-				}
-			}
-
-			// My function to create random number
-			function random(min, max, round) {
-				if (round == 'round') {
-					return Math.round(Math.random() * (max - min) + min);
-				} else {
-					return Math.random() * (max - min) + min;
-				}
-			}
-
-			// Function to choose one of these best colors
-			function colors() {
-				if (timer > colorchanger) { num = random(0, 7, 'round'); colorchanger = timer + (500); }
-				switch(num) {
-					case 1: return '#ff0000'; break;
-					case 2: return '#ffff00'; break;
-					case 3: return '#00ff00'; break;
-					case 4: return '#00ffff'; break;
-					case 5: return '#0000ff'; break;
-					case 6: return '#ff00ff'; break;
-					case 7: return '#ffac00'; break;
-				}
-			}
-
-			// Function to make firework
-			createFirework = function() {
-				firework = new Firework();
-
-				firework.x = firework.sx = clientWidth/2;
-				firework.y = firework.sy = clientHeight;
-
-				firework.color = colors();
-
-				if (x != 0 && y != 0) {
-					firework.tx = x;
-					firework.ty = y;
-					x = y = 0;
-				} else {
-					firework.tx = random(400, clientWidth-400);
-					firework.ty = random(0, clientHeight / 2);
-				}
-
-				var angle = getAngle(firework.sx, firework.sy, firework.tx, firework.ty);
-
-				firework.vx = Math.cos(angle * Math.PI/180.0);
-				firework.vy = Math.sin(angle * Math.PI/180.0);
-
-				fireworks.push(firework);
-			}
-
-			// Function to start Firework
-			Firework = function() {
-
-				this.x = 0;
-				this.y = 0;
-				this.sx = 0;
-				this.sy = 0;
-				this.tx = 0;
-				this.ty = 0;
-				this.vx = 0;
-				this.vy = 0;
-				this.color = 'rgb(255,255,255)';
-				this.dis = distance(this.sx, this.sy, this.tx, this.ty);
-				this.speed = random(700, 1100);
-				this.gravity = 1.5;
-				this.ms = 0;
-				this.s = 0;
-				this.del = false;
-
-				this.update = function(ms) {
-					this.ms = ms / 1000;
-
-					if (this.s > 2000/ms) {
-						createParticles(typecount, 30, this.x, this.y, this.color);
-						this.del = true;
-					} else {
-						this.speed *= 0.98;
-						this.x -= this.vx * this.speed * this.ms;
-						this.y -= this.vy * this.speed * this.ms - this.gravity;
-					}
-
-					this.s++;
-				}
-
-				this.draw = function() {
-					ctx.beginPath();
-					ctx.fillStyle = this.color;
-					ctx.arc(this.x, this.y, 1, 0, 2*Math.PI);
-					ctx.fill();
-				}
-			}
-
-			// Function to create array particles
-			createParticles = function(type, count, pox, poy, color) {
-				for (var i = 0; i < count; i++) {
-					par = new Particles();
-					par.type = type;
-
-					par.color = color;
-					par.x = pox;
-					par.y = poy;
-
-					var angle = random(0, 360);
-					par.vx = Math.cos(angle * Math.PI/180.0);
-					par.vy = Math.sin(angle * Math.PI/180.0);
-
-					particles.push(par);
-				};
-			}
-
-			// Function to make particles
-			Particles = function() {
-
-				this.x = 0;
-				this.y = 0;
-				this.vx = 0;
-				this.vy = 0;
-				this.speed = random(200, 500);
-				this.gravity = 1;
-				this.wind = 0;
-				this.type = 1;
-				this.opacity = 1;
-				this.s = 0;
-				this.scale = 1;
-				this.color = '#FFF';
-				this.del = false;
-
-				this.update = function(ms) {
-					this.ms = ms / 1000;
-
-					if (this.s > 900/ms) { if (this.opacity - 0.05 < 0) { this.opacity = 0; } else { this.opacity -= 0.05; } }
-
-					if (this.type == 1) {
-						this.speed *= 0.96;
-						this.x -= this.vx * this.speed * this.ms + this.wind;
-						this.y -= this.vy * this.speed * this.ms - this.gravity;
-					} else if (this.type == 2) {
-						if (this.s < 800/ms) { this.scale += 0.1; } else { this.scale -= 0.2; }
-						this.speed *= 0.96;
-						this.x -= this.vx * this.speed * this.ms + this.wind;
-						this.y -= this.vy * this.speed * this.ms - this.gravity;
-					} else if (this.type == 3) {
-						this.speed *= 0.95;
-						this.x -= this.vx * this.speed * this.ms + this.wind;
-						this.y -= this.vy * this.speed * this.ms;
-					} else if (this.type == 4) {
-						this.speed *= 0.96;
-						this.x -= this.vx * this.speed * this.ms + this.wind;
-						this.y -= this.vy * this.speed * this.ms - this.gravity;
-
-						spark = new Sparkler();
-						spark.x = this.x;
-						spark.y = this.y;
-						spark.vx = Math.cos(random(0, 360, 'round') * (Math.PI/180))*1.05;
-						spark.vy = Math.sin(random(0, 360, 'round') * (Math.PI/180))*1.05;
-						spark.tx = this.x;
-						spark.ty = this.y;
-						spark.color = this.color;
-						spark.limit = random(4, 10, 'round');
-						sparks.push(spark);
-					} else {
-
-					}
-
-					this.s++;
-				}
-
-				this.draw = function() {
-					ctx.save();
-					ctx.globalAlpha = this.opacity;
-					ctx.fillStyle = this.color;
-					ctx.strokeStyle = this.color;
-
-					if (this.type == 1) {
-						ctx.beginPath();
-						ctx.arc(this.x, this.y, 1.5, 0, 2*Math.PI);
-						ctx.fill();
-					} else if (this.type == 2) {
-						ctx.translate(this.x, this.y);
-						ctx.scale(this.scale, this.scale);
-						ctx.beginPath();
-						ctx.fillRect(0, 0, 1, 1);
-					} else if (this.type == 3) {
-						ctx.beginPath();
-						ctx.moveTo(this.x, this.y);
-						ctx.lineTo(this.x - this.vx * 10, this.y - this.vy * 10);
-						ctx.stroke();
-					} else if (this.type == 4) {
-						ctx.beginPath();
-						ctx.arc(this.x, this.y, 1.5, 0, 2*Math.PI);
-						ctx.fill();
-					} else {
-						ctx.arc(this.x, this.y, 1, 0, 2*Math.PI);
-						ctx.fill();
-					}
-
-					ctx.closePath();
-					ctx.restore();
-				}
-			}
-
-			// Function for sparkler type of firework
-			Sparkler = function() {
-
-				this.x = 0;
-				this.y = 0;
-				this.tx = 0;
-				this.ty = 0;
-				this.limit = 0;
-				this.color = 'red';
-
-				this.update = function() {
-					this.tx += this.vx;
-					this.ty += this.vy;
-
-					this.limit--;
-				}
-
-				this.draw = function() {
-					ctx.beginPath();
-					ctx.moveTo(this.x, this.y);
-					ctx.lineTo(this.tx, this.ty);
-					ctx.lineWidth = 1;
-					ctx.strokeStyle = this.color;
-					ctx.stroke();
-					ctx.closePath();
-				}
-			}
-
-			text = function() {
-				ctx.beginPath();
-				ctx.fillStyle = 'white';
-				ctx.font = "14px arial";
-				ctx.fillText("You can change the Firework style with right click and fire with left click on mouse.", 2, clientHeight-2);
-			}
-
-			// Mouse coordinates to fire
-			canvas.addEventListener('mousedown', function(evt) {
-				evt = evt || window.event;
-				var button = evt.which || evt.button;
-			    if (button == 1) {
-			    	// If button is first (left) on mouse
-					x = evt.clientX; y = evt.clientY; createFirework();
-				} else { 
-					// If button is second (right) on mouse
-					if (typecount == 4) { typecount = 1; } else { typecount++; }
+			// Close sidebar when clicking outside
+			document.addEventListener('click', function(event) {
+				const sidebar = document.getElementById('sidebar');
+				const menuToggle = document.querySelector('.menu-toggle');
+				if (!sidebar.contains(event.target) && !menuToggle.contains(event.target)) {
+					sidebar.classList.remove('open');
 				}
 			});
 
-			update = function(frame) {
-
-				// text to controll firework
-				text();
-
-				// Fade previous frame without darkening the page behind canvas
-				ctx.globalCompositeOperation = 'destination-out';
-				ctx.fillStyle = 'rgba(0, 0, 0, 0.18)';
-				ctx.fillRect(0, 0, clientWidth, clientHeight);
-				ctx.globalCompositeOperation = 'source-over';
-				ctx.globalAlpha = 1;
-
-
-				if (timer > LimiterTicker) {
-					// Creating array with starting Firework
-					createFirework();
-
-					LimiterTicker = timer + (TimedFirework / frame);
-				}
-
-				var i = fireworks.length;
-				while(i--) {
-					// Progress starting Fireworks
-					if (fireworks[i].del == true) { fireworks.splice(i, 1); } else {
-						fireworks[i].update(frame);
-						fireworks[i].draw();
+			// Smooth scrolling for navigation links
+			document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+				anchor.addEventListener('click', function (e) {
+					e.preventDefault();
+					const target = document.querySelector(this.getAttribute('href'));
+					if (target) {
+						target.scrollIntoView({
+							behavior: 'smooth',
+							block: 'start'
+						});
+						// Close sidebar on mobile after clicking
+						document.getElementById('sidebar').classList.remove('open');
 					}
-				}
+				});
+			});
 
-				var i = particles.length;
-				while(i--) {
-					// Progress particles
-					if (particles[i].opacity == 0) { particles.splice(i, 1); } else {
-						particles[i].update(frame);
-						particles[i].draw();
-					}
-				}
+			// Countdown timer
+			function updateCountdown() {
+				const graduationDate = new Date('2025-09-27T08:30:00').getTime();
+				const now = new Date().getTime();
+				const distance = graduationDate - now;
 
-				var i = sparks.length;
-				while(i--) {
-					// Progress sparks
-					if (sparks[i].limit < 0) { sparks.splice(i, 1); } else {
-						sparks[i].update(frame);
-						sparks[i].draw();
-					}
-				}
+				if (distance > 0) {
+					const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+					const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+					const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+					const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-				timer++;
+					document.getElementById('days').textContent = days;
+					document.getElementById('hours').textContent = hours;
+					document.getElementById('minutes').textContent = minutes;
+					document.getElementById('seconds').textContent = seconds;
+				} else {
+					document.getElementById('days').textContent = '0';
+					document.getElementById('hours').textContent = '0';
+					document.getElementById('minutes').textContent = '0';
+					document.getElementById('seconds').textContent = '0';
+				}
 			}
 
-			var main = setInterval(function() { update(frameDelay); }, frameDelay);
+			// Update countdown every second
+			updateCountdown();
+			setInterval(updateCountdown, 1000);
+
+			// RSVP removed per request
+
+			// Scroll animations
+			const observerOptions = {
+				threshold: 0.1,
+				rootMargin: '0px 0px -50px 0px'
+			};
+
+			const observer = new IntersectionObserver(function(entries) {
+				entries.forEach(entry => {
+					if (entry.isIntersecting) {
+						entry.target.style.opacity = '1';
+						entry.target.style.transform = 'translateY(0)';
+					}
+				});
+			}, observerOptions);
+
+			// Observe sections for animation
+			document.querySelectorAll('.section').forEach(section => {
+				section.style.opacity = '0';
+				section.style.transform = 'translateY(30px)';
+				section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+				observer.observe(section);
+			});
+
+			// Gallery hover effects
+			document.querySelectorAll('.gallery-item').forEach(item => {
+				item.addEventListener('mouseenter', function() {
+					this.style.transform = 'scale(1.05) rotate(2deg)';
+				});
+				item.addEventListener('mouseleave', function() {
+					this.style.transform = 'scale(1) rotate(0deg)';
+				});
+			});
+
+			// Achievement cards animation
+			document.querySelectorAll('.achievement').forEach((achievement, index) => {
+				achievement.style.opacity = '0';
+				achievement.style.transform = 'translateY(20px)';
+				achievement.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+				
+				const achievementObserver = new IntersectionObserver(function(entries) {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							entry.target.style.opacity = '1';
+							entry.target.style.transform = 'translateY(0)';
+						}
+					});
+				}, observerOptions);
+				
+				achievementObserver.observe(achievement);
+			});
+		</script>
+
+		<!-- JAVASCRIPT - CANVAS -->
+		<script>
+			// Fireworks feature fully removed
 		</script>
 	</body>
 </html>
