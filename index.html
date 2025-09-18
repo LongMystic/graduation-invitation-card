@@ -12,8 +12,8 @@
 		<!-- Open Graph / Facebook -->
 		<meta property="og:type" content="website" />
 		<meta property="og:url" content="https://longmystic.github.io/graduation-invitation-card/" />
-		<meta property="og:title" content="Lễ Tốt Nghiệp - Đại Học Bách Khoa Hà Nội" />
-		<meta property="og:description" content="Tham dự lễ tốt nghiệp của sinh viên Đại học Bách Khoa Hà Nội. Thời gian: 8h30-10h30 Thứ 7, 27/09/2025 tại Tòa C2." />
+		<meta property="og:title" content="Thiệp mời tốt nghiệp - HUST" />
+		<meta property="og:description" content="Mời mọi người tham dự lễ tốt nghiệp của em nha!!!" />
 		<meta property="og:image" content="https://storage.googleapis.com/hust-files/2021-11-15/5807675312963584/background-new-page_.9m.jpeg" />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
@@ -64,7 +64,7 @@
 
 		/* Hero Section */
 		.hero { text-align:center; padding:100px 30px; position:relative; }
-		.hero .card { pointer-events:auto; width:min(92vw, 720px); background:rgba(255,255,255,.9); border:1px solid rgba(0,0,0,.1); border-radius:20px; padding:40px; box-shadow:0 20px 50px rgba(0,0,0,0.15); text-align:center; color:#333; backdrop-filter:blur(8px); position:relative; overflow:hidden; margin:0 auto; }
+		.hero .card { pointer-events:auto; width:100%; max-width:720px; background:rgba(255,255,255,.9); border:1px solid rgba(0,0,0,.1); border-radius:20px; padding:40px; box-shadow:0 20px 50px rgba(0,0,0,0.15); text-align:center; color:#333; backdrop-filter:blur(8px); position:relative; overflow:hidden; margin:0 auto; }
 		.hero .card:before { content:""; position:absolute; inset:0; background: transparent; pointer-events:none; z-index:0; }
 		.hero .badge { display:inline-block; padding:8px 16px; border-radius:999px; font-size:16px; background:linear-gradient(90deg, #2fbf71, #198754); color:#fff; box-shadow:0 4px 10px rgba(47,191,113,.35); position:relative; overflow:hidden; }
 		.hero .badge:after { content:""; position:absolute; inset:-40% auto -40% -60%; width:40%; background:linear-gradient(75deg, transparent, rgba(255,255,255,.7), transparent); transform:skewX(-20deg); animation:shine 3.6s ease-in-out infinite; }
@@ -88,7 +88,8 @@
 		/* About Section */
 		.about { background:rgba(255,255,255,.7); backdrop-filter:blur(10px); border-radius:20px; padding:40px; margin:40px 0; }
 		.about-content { display:grid; grid-template-columns:1fr 2fr; gap:40px; align-items:center; }
-		.about-photo { width:200px; height:200px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; font-size:60px; color:#666; margin:0 auto; }
+		.about-photo { width:200px; height:200px; border-radius:50%; background:#f0f0f0; display:flex; align-items:center; justify-content:center; font-size:60px; color:#666; margin:0 auto; overflow:hidden; }
+		.about-photo img { width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
 		.about-text h3 { color:#fff; margin-bottom:15px; font-size:24px; font-weight:bold; text-shadow:0 2px 4px rgba(0,0,0,.8); background:rgba(0,0,0,.7); padding:10px 15px; border-radius:8px; }
 		.about-text p { color:#666; line-height:1.6; margin-bottom:15px; }
 		.achievements { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-top:30px; }
@@ -138,6 +139,8 @@
 		.footer-content { max-width:1200px; margin:0 auto; }
 		.social-links { display:flex; justify-content:center; gap:20px; margin:20px 0; }
 		.social-links a { width:40px; height:40px; background:rgba(0,0,0,.1); border-radius:50%; display:flex; align-items:center; justify-content:center; transition:background .3s; }
+		/* Rectangular soft-corner variant for social links */
+		.social-links a.pill { width:auto; height:auto; padding:8px 12px; border-radius:12px; gap:8px; }
 		.social-links a:hover { background:rgba(0,0,0,.2); }
 
 		/* Background blobs removed */
@@ -153,6 +156,21 @@
 			.timeline-item { padding-left:60px; text-align:left !important; }
 			.timeline-dot { left:20px; }
 			.timeline-item:nth-child(odd) .timeline-content::before { left:-20px; right:auto; border-right-color:rgba(255,255,255,.8); border-left-color:transparent; }
+			/* Responsive tweaks for hero center card */
+			.section { padding:40px 20px; }
+			.hero { padding:80px 20px; }
+			.hero .card { padding:24px; border-radius:16px; }
+			.hero .badge { font-size:14px; padding:6px 12px; }
+			.hero .message { font-size:16px; }
+			.hero .details { gap:6px; }
+			.hero .countdown { padding:16px; }
+			.hero .countdown-items { gap:10px; }
+			.hero .countdown-item { min-width:60px; padding:12px 14px; }
+		}
+
+		@media (max-width: 400px) {
+			.hero .card { padding:20px; }
+			.hero .countdown-item { min-width:54px; padding:10px 12px; }
 		}
 	</style>
 
@@ -205,7 +223,7 @@
 					</div>
 				</div>
 					<h1>LỄ TỐT NGHIỆP</h1>
-					<p class="message">Trân trọng mời mọi người tới tham dự buổi lễ tốt nghiệp của em/mình !</p>
+					<p class="message">Trân trọng mời mọi người tới <br>tham dự buổi lễ tốt nghiệp của em/mình !</p>
 				<ul class="details">
 					<li><strong>Thời gian:</strong> 8h30-10h30 Thứ 7 27/09/2025</li>
 					<li><strong>Địa điểm:</strong> Tòa C2 - Đại học Bách Khoa Hà Nội</li>
@@ -243,33 +261,30 @@
 				<h2>Về tôi</h2>
 				<div class="about">
 					<div class="about-content">
-						<div class="about-photo">👨‍🎓</div>
+						<div class="about-photo">
+							<img src="https://drive.google.com/thumbnail?id=1CfBMy4Xbkju5bDei9RI7TNYuh8f7PG3h&sz=w2000" alt="Ảnh chân dung" loading="lazy" decoding="async" referrerpolicy="no-referrer" />
+						</div>
 						<div class="about-text">
-							<h3>Chào mừng đến với lễ tốt nghiệp của tôi!</h3>
-							<p>Xin chào! Tôi là một sinh viên tốt nghiệp ngành Công nghệ thông tin tại Đại học Bách Khoa Hà Nội. Sau 4 năm học tập và rèn luyện, tôi rất vui mừng được chia sẻ niềm vui này với gia đình, bạn bè và những người thân yêu.</p>
-							<p>Trong suốt quá trình học tập, tôi đã không ngừng nỗ lực để đạt được những thành tích tốt nhất và tích lũy kinh nghiệm quý báu. Hôm nay, tôi muốn mời bạn cùng tham dự buổi lễ đặc biệt này để cùng chúc mừng thành công của tôi.</p>
+							<h3>Chào mừng đến với lễ tốt nghiệp của mình!</h3>
+							<p>Chào mọi người! Mình là <b>Vũ Khắc Long</b>, sinh viên ngành Khoa học máy tính tại Đại học Bách Khoa Hà Nội. Sau 4 năm học tập và rèn luyện, mình đã tốt nghiệp Bách Khoa.</p>
+							<p>Mình rất vui mừng được chia sẻ niềm vui này với gia đình, bạn bè và những người thân yêu. Vì vậy, muốn mời mọi người cùng tham dự buổi lễ đặc biệt này để chia sẻ niềm vui nhaa.</p>
 						</div>
 					</div>
 					<div class="achievements">
 						<div class="achievement">
 							<div class="icon">🏆</div>
-							<h4>Học bổng xuất sắc</h4>
-							<p>Đạt học bổng toàn phần 4 năm liên tiếp</p>
-						</div>
-						<div class="achievement">
-							<div class="icon">💻</div>
-							<h4>Dự án tốt nghiệp</h4>
-							<p>Phát triển ứng dụng web fullstack</p>
+							<h4>Học bổng</h4>
+							<p>4 năm liên tiếp đạt học bổng <br>trong lòng người hâm mộ</p>
 						</div>
 						<div class="achievement">
 							<div class="icon">🎯</div>
-							<h4>GPA 3.8/4.0</h4>
-							<p>Xếp loại tốt nghiệp loại giỏi</p>
+							<h4>GPA 3.6/4.0</h4>
+							<p>Xếp loại tốt nghiệp loại xuất sắc <br>(REAL)</p>
 						</div>
 						<div class="achievement">
 							<div class="icon">🤝</div>
 							<h4>Hoạt động xã hội</h4>
-							<p>Chủ tịch CLB Công nghệ thông tin</p>
+							<p>Chủ tịch CLB ChatGPT, Claude, Cursor <br>1 thành viên</p>
 						</div>
 					</div>
 				</div>
@@ -280,9 +295,15 @@
 				<h2>Địa điểm tổ chức</h2>
 				<div class="location">
 					<div class="map-container">
-						<div class="map-placeholder">
-							<!-- Map placeholder - in real implementation, you'd embed Google Maps here -->
-						</div>
+						<iframe
+							src="https://www.google.com/maps?q=21.0064474,105.8423066&hl=vi&z=17&output=embed"
+							width="100%"
+							height="100%"
+							style="border:0;"
+							allowfullscreen=""
+							loading="lazy"
+							referrerpolicy="no-referrer-when-downgrade"
+							title="Bản đồ - Hội trường C2, Đại học Bách Khoa Hà Nội"></iframe>
 					</div>
 					<div class="location-info">
 						<div class="location-item">
@@ -295,22 +316,15 @@
 						<div class="location-item">
 							<div class="icon">🚗</div>
 							<div class="text">
-								<h4>Bãi đỗ xe</h4>
-								<p>Có bãi đỗ xe miễn phí trong khuôn viên trường</p>
+								<h4>Chỗ gửi xe</h4>
+								<p>Tòa B1, D3, D7-9, C7</p>
 							</div>
 						</div>
 						<div class="location-item">
 							<div class="icon">🚌</div>
 							<div class="text">
 								<h4>Phương tiện công cộng</h5>
-								<p>Xe bus: Tuyến 01, 02, 03, 09<br>Metro: Ga Cầu Giấy (5 phút đi bộ)</p>
-							</div>
-						</div>
-						<div class="location-item">
-							<div class="icon">🍽️</div>
-							<div class="text">
-								<h4>Tiệc mừng</h4>
-								<p>Nhà hàng ABC - 123 Lê Duẩn<br>Thời gian: 11h30-13h30</p>
+								<p>Xe bus: Tuyến 03A, 21A, 21B, 31</p>
 							</div>
 						</div>
 					</div>
@@ -320,31 +334,38 @@
 			<!-- Gallery Section -->
 			<section id="gallery" class="section">
 				<h2>Khoảnh khắc đẹp</h2>
+				<p style="text-align:center; color:#333; margin-top:-10px; margin-bottom:20px;">
+					<span style="display:inline-block; background:rgba(255,255,255,.9); padding:10px 14px; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,.08);">
+					Chưa có, hi vọng chúng sẽ được điền bởi các tấm ảnh của mình và mọi người tại buổi lễ tốt nghiệp ❤️
+					</span>
+				</p>
 				<div class="gallery">
 					<div class="gallery-item">📚</div>
 					<div class="gallery-item">🎓</div>
 					<div class="gallery-item">👥</div>
 					<div class="gallery-item">🏫</div>
-					<div class="gallery-item">💻</div>
 					<div class="gallery-item">🎉</div>
 				</div>
 			</section>
-
-			<!-- Timeline Section removed per request -->
-
-			<!-- RSVP Section removed per request -->
 			</main>
 
 		<!-- Footer -->
 		<footer>
 			<div class="footer-content">
-				<h3>🎓 Cảm ơn bạn đã tham dự!</h3>
+				<h3>🎓 Rất mong mọi người sẽ tới tham dự!</h3>
 				<p>Hãy liên hệ với tôi nếu bạn có bất kỳ câu hỏi nào</p>
 				<div class="social-links">
-					<a href="#" title="Facebook">📘</a>
-					<a href="#" title="Instagram">📷</a>
-					<a href="#" title="LinkedIn">💼</a>
-					<a href="#" title="Email">📧</a>
+					<a href="https://www.facebook.com/erdkalz" title="Facebook" aria-label="Facebook" target="_blank" rel="noopener noreferrer" class="pill">
+						<svg viewBox="0 0 24 24" width="20" height="20" fill="#1877F2" aria-hidden="true">
+							<path d="M22 12.06C22 6.5 17.52 2 11.99 2S2 6.5 2 12.06c0 5.02 3.66 9.19 8.44 9.94v-7.03H7.9v-2.9h2.54V9.41c0-2.5 1.49-3.88 3.77-3.88 1.09 0 2.23.2 2.23.2v2.45h-1.26c-1.24 0-1.62.77-1.62 1.56v1.87h2.76l-.44 2.9h-2.32v7.03C18.34 21.25 22 17.08 22 12.06z"/>
+						</svg>
+					</a>
+					<a href="tel:0374293850" title="Gọi 0374293850" aria-label="Phone 0374293850" class="pill">
+						<svg viewBox="0 0 24 24" width="18" height="18" fill="#146c43" aria-hidden="true">
+							<path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.11.37 2.3.57 3.58.57a1 1 0 011 1V20a1 1 0 01-1 1C11.85 21 3 12.15 3 1a1 1 0 011-1h3.5a1 1 0 011 1c0 1.28.2 2.47.57 3.58a1 1 0 01-.24 1.01l-2.2 2.2z"/>
+						</svg>
+						<span style="color:#333; font-weight:600;">0374293850</span>
+					</a>
 				</div>
 				<p>&copy; 2025 Graduation Invitation. Made with ❤️</p>
 		</div>
